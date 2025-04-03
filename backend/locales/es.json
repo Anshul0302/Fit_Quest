@@ -1,0 +1,82 @@
+{
+  "auth": {
+    "user_exists": "El usuario ya existe.",
+    "otp_sent": "El OTP fue enviado a tu correo.",
+    "otp_invalid": "OTP inválido o expirado.",
+    "otp_verified": "¡OTP verificado exitosamente!",
+    "signup_success": "¡Registro exitoso!",
+    "invalid_credentials": "Correo o contraseña inválidos.",
+    "google_only": "Por favor inicia sesión con Google",
+    "admin_not_found": "Administrador no encontrado",
+    "password_reset_email_sent": "Las instrucciones de restablecimiento fueron enviadas a tu correo.",
+    "password_reset_success": "¡Contraseña restablecida exitosamente!",
+    "expired_token": "El token de restablecimiento ha expirado.",
+    "invalid_token": "Token inválido o expirado.",
+    "user_not_found": "Usuario no encontrado.",
+    "email_required": "El correo electrónico es obligatorio.",
+    "invalid_request": "Solicitud inválida.",
+    "no_token": "No hay token, autorización denegada.",
+  
+    "admin_only": "Acceso denegado: Solo administradores."
+
+
+
+    
+  },
+
+  "admin": {
+    "not_found": "Administrador no encontrado",
+    "already_exists": "El administrador ya existe",
+    "created": "Administrador creado exitosamente",
+    "deleted": "Administrador eliminado exitosamente",
+    "no_admins": "No se encontraron administradores en la base de datos.",
+    "server_error": "Error del servidor",
+    "unauthorized": "No hay token, autorización denegada.",
+    "invalid_token": "El token no es válido.",
+    "dashboard_error": "No se pudieron obtener las estadísticas del panel.",
+    "users_fetch_error": "No se pudieron obtener los usuarios.",
+    "orders_fetch_error": "No se pudieron obtener los pedidos.",
+    "challenges_fetch_error": "No se pudieron obtener los desafíos."
+  },
+  "payment": {
+    "invalid_amount": "Cantidad inválida",
+    "creation_failed": "Error al iniciar el pago"
+  },
+  "store": {
+    "product_added": "Producto agregado exitosamente",
+    "product_updated": "Producto actualizado exitosamente",
+    "product_deleted": "Producto eliminado exitosamente",
+    "product_not_found": "Producto no encontrado",
+    "order_created": "Pedido creado",
+    "order_updated": "Estado del pedido actualizado",
+    "order_cancelled": "Pedido cancelado exitosamente",
+    "order_not_found": "Pedido no encontrado",
+    "server_error": "Error del servidor"
+  },
+  "upload": {
+    "no_image": "No image uploaded",
+    "no_file": "No file uploaded",
+    "image_success": "Image uploaded successfully",
+    "file_success": "File uploaded successfully",
+    "delete_success": "File deleted successfully",
+    "delete_failed": "Delete failed",
+    "missing_id": "Missing public_id in query string",
+    "server_error": "Internal Server Error"
+  },
+  "user": {
+    "not_found": "User not found",
+    "profile_updated": "User profile updated successfully",
+    "challenge_not_found": "Challenge not found",
+    "challenge_joined": "Challenge joined",
+    "subscription_updated": "Subscription updated",
+    "deleted": "User account deleted successfully",
+    "server_error": "Server error"
+  },
+  "verify": {
+    "user_not_found": "Usuario no encontrado",
+    "otp_expired": "El código ha expirado. Solicite uno nuevo.",
+    "invalid_otp": "OTP inválido",
+    "success": "Correo electrónico verificado correctamente.",
+    "server_error": "Error del servidor"
+  }
+}

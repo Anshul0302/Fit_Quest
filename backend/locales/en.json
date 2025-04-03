@@ -1,0 +1,78 @@
+{
+  "auth": {
+    "user_exists": "User already exists.",
+    "otp_sent": "OTP sent to your email address",
+    "otp_invalid": "Invalid or expired OTP.",
+    "otp_verified": "OTP verified successfully!",
+    "signup_success": "Signup successful!",
+    "invalid_credentials": "Invalid email or password.",
+    "google_only": "Please login with Google",
+    "admin_not_found": "Admin not found",
+    "password_reset_email_sent": "Password reset instructions sent to your email.",
+    "password_reset_success": "Password reset successfully!",
+    "expired_token": "Reset token has expired.",
+    "invalid_token": "Invalid or expired token.",
+    "user_not_found": "User not found.",
+    "email_required": "Email is required.",
+    "invalid_request": "Invalid request.",
+    "no_token": "No token, authorization denied.",
+    "admin_only": "Access denied: Admins only."
+  },
+
+  "admin": {
+    "not_found": "Admin not found",
+    "already_exists": "Admin already exists",
+    "created": "Admin created successfully",
+    "deleted": "Admin deleted successfully",
+    "no_admins": "No admins found in the database.",
+    "server_error": "Server error",
+    "unauthorized": "No token, authorization denied.",
+    "invalid_token": "Token is not valid.",
+    "dashboard_error": "Unable to fetch dashboard statistics.",
+    "users_fetch_error": "Unable to fetch users.",
+    "orders_fetch_error": "Unable to fetch orders.",
+    "challenges_fetch_error": "Unable to fetch challenges."
+  },
+  "payment": {
+    "invalid_amount": "Invalid amount",
+    "creation_failed": "Payment initiation failed"
+  },
+  "store": {
+    "product_added": "Product added successfully",
+    "product_updated": "Product updated successfully",
+    "product_deleted": "Product deleted successfully",
+    "product_not_found": "Product not found",
+    "order_created": "Order created",
+    "order_updated": "Order status updated",
+    "order_cancelled": "Order canceled successfully",
+    "order_not_found": "Order not found",
+    "server_error": "Server error",
+    "invalid_category": "Invalid Category"
+  },
+  "upload": {
+    "no_image": "No se subió ninguna imagen",
+    "no_file": "No se subió ningún archivo",
+    "image_success": "Imagen subida con éxito",
+    "file_success": "Archivo subido con éxito",
+    "delete_success": "Archivo eliminado con éxito",
+    "delete_failed": "Error al eliminar el archivo",
+    "missing_id": "Falta public_id en la consulta",
+    "server_error": "Error interno del servidor"
+  },
+  "user": {
+    "not_found": "Usuario no encontrado",
+    "profile_updated": "Perfil actualizado correctamente",
+    "challenge_not_found": "Desafío no encontrado",
+    "challenge_joined": "Desafío unido",
+    "subscription_updated": "Suscripción actualizada",
+    "deleted": "Cuenta de usuario eliminada correctamente",
+    "server_error": "Error del servidor"
+  },
+  "verify": {
+    "user_not_found": "User not found",
+    "otp_expired": "OTP expired. Please request a new one.",
+    "invalid_otp": "Invalid OTP",
+    "success": "Email verified successfully.",
+    "server_error": "Server Error"
+  }
+}
