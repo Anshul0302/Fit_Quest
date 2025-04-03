@@ -17,17 +17,14 @@ const AdminLogin = () => {
     setMsg("");
 
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const res = await axios.post("http://localhost:8000/api/auth/login", {
+        email,
+        password,
+      });
 
       localStorage.setItem("adminToken", res.data.token);
       setMsg("Login successful!");
-      navigate("/dashboard");
+      navigate("dashboard");
     } catch (err) {
       setMsg(err.response?.data?.msg || "Something went wrong.");
     }
@@ -41,7 +38,7 @@ const AdminLogin = () => {
           {/* FitQuest Logo */}
           <div className="flex justify-center mb-7">
             <img
-              src="/src/assets/images/fitquestLogo1.png"
+              src="/fitquestLogo1.png"
               alt="FitQuest Logo"
               className="h-20 "
             />
@@ -108,7 +105,7 @@ const AdminLogin = () => {
         {/* ............................................image on Right.................................... */}
         <div className="w-1/2 h-full bg-gradient-to-br from-blue-500 to-indigo-700 rounded-2xl relative overflow-hidden">
           <img
-            src="/src/assets/images/muscled-women.png"
+            src="/muscled-women.png"
             className="absolute bottom-0 right-0 h-full object-cover"
             alt="fitness"
           />
