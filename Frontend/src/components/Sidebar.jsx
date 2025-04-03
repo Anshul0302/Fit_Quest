@@ -15,7 +15,9 @@ const Sidebar = () => {
 
   return (
     <div className="bg-white w-60 p-4 min-h-screen shadow">
-      <h2 className="text-2xl font-bold text-purple-500 mb-8">Fitquest</h2>
+      {/* <h2 className="text-2xl font-bold text-purple-500 mb-8">Fitquest</h2> */}
+      <img src="/fitquestLogo1.png" alt="FitQuest Logo" className="h-12 mb-3" />
+
       <ul className="space-y-4 text-gray-700">
         <li
           className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer ${
@@ -31,7 +33,7 @@ const Sidebar = () => {
         </li>
         <li
           className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer ${
-            isActive("/admin/users") ? "bg-purple-600 text-white" : ""
+            isActive("/admain/users") ? "bg-purple-600 text-white" : ""
           }`}
         >
           <Link to="/admin/users" className="flex items-center gap-2 w-full">

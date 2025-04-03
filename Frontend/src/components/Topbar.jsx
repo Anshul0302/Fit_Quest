@@ -44,8 +44,8 @@ const Topbar = () => {
     <div className="bg-white shadow px-6 py-4 flex items-center justify-between">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <img src="/fitquestLogo1.png" alt="FitQuest Logo" className="h-8" />
-        <span className="text-xl font-bold text-gray-800">FitQuest</span>
+        {/* <img src="/fitquestLogo1.png" alt="FitQuest Logo" className="h-8" /> */}
+        {/* <span className="text-xl font-bold text-gray-800">FitQuest</span> */}
       </div>
 
       {/* Right-side Controls */}

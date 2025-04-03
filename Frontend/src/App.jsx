@@ -22,6 +22,11 @@ function App() {
         {/* <Route path="/admin" element={<AdminLayout />}> */}
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/users" element={<UserManagement />} />
+        <Route path="/admin/orders" element={<UserManagement />} />
+        <Route path="/admin/challenges" element={<UserManagement />} />
+        <Route path="/admin/store" element={<UserManagement />} />
+        <Route path="/admin/subscription" element={<UserManagement />} />
+        <Route path="/admin/leaderboard" element={<UserManagement />} />
         {/* </Route> */}
       </Routes>
     </Router>

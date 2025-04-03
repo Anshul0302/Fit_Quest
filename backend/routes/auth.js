@@ -71,6 +71,18 @@ router.post(
     }
   }
 );
+//GEt get all users
+router.get("/allusers", async (req, res) => {
+  try {
+    const users = await User.find().select(
+      "-password -otp -otpExpiry -resetToken -resetTokenExpiry"
+    );
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("❌ Error fetching users:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
 
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
@@ -103,7 +115,6 @@ router.post("/verify-otp", async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
-
 
 // 📩 Resend OTP
 router.post("/resend-otp", async (req, res) => {
@@ -163,7 +174,8 @@ router.post("/admin/login", async (req, res) => {
     if (!admin) return res.status(400).json({ msg: "Admin not found" });
 
     const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid email or password." });
+    if (!isMatch)
+      return res.status(400).json({ msg: "Invalid email or password." });
 
     const token = jwt.sign(
       { user: { id: admin._id, role: "admin" } },
@@ -177,9 +189,6 @@ router.post("/admin/login", async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
-
-
-
 
 router.post(
   "/login",
@@ -243,7 +252,8 @@ router.post("/forgot-password", async (req, res) => {
       isAdmin = true;
     }
 
-    if (!user) return res.status(400).json({ msg: res.__("auth.user_not_found") });
+    if (!user)
+      return res.status(400).json({ msg: res.__("auth.user_not_found") });
 
     // 🔐 Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -315,7 +325,6 @@ router.post("/reset-password", async (req, res) => {
     res.status(400).json({ msg: "Invalid token" });
   }
 });
-
 
 router.get(
   "/google",
