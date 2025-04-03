@@ -74,31 +74,36 @@ router.post(
 
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
-  if (!email || !otp) {
-    return res.status(400).json({ msg: res.__("auth.email_required") });
+  const jwt = require("jsonwebtoken");
+
+  try {
+    // Look in both Admin and User
+    const user =
+      (await User.findOne({ email })) || (await Admin.findOne({ email }));
+
+    if (!user) return res.status(404).json({ msg: "User/Admin not found" });
+
+    if (!user.otp || user.otp !== otp || user.otpExpiry < Date.now()) {
+      return res.status(400).json({ msg: "Invalid or expired OTP" });
+    }
+
+    const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = Date.now() + 15 * 60 * 1000;
+    user.otp = null;
+    user.otpExpiry = null;
+
+    await user.save();
+    res.json({ msg: "OTP verified", token: resetToken });
+  } catch (err) {
+    console.error("❌ OTP verify error:", err.message);
+    res.status(500).json({ msg: "Server error" });
   }
-
-  let user = await User.findOne({ email });
-  if (!user)
-    return res.status(400).json({ msg: res.__("auth.user_not_found") });
-
-  if (user.otp !== otp || user.otpExpiry < Date.now()) {
-    return res.status(400).json({ msg: res.__("auth.otp_invalid") });
-  }
-
-  user.otp = null;
-  user.otpExpiry = null;
-
-  // ✅ Create reset token here and send it back
-  const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "15m",
-  });
-  user.resetToken = resetToken;
-  user.resetTokenExpiry = Date.now() + 15 * 60 * 1000;
-  await user.save();
-
-  res.json({ msg: "OTP verified", token: resetToken }); // ✅ send token here
 });
+
 
 // 📩 Resend OTP
 router.post("/resend-otp", async (req, res) => {
@@ -150,6 +155,7 @@ router.post("/resend-otp", async (req, res) => {
   }
 });
 
+// POST /api/auth/admin/login
 router.post("/admin/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -157,34 +163,23 @@ router.post("/admin/login", async (req, res) => {
     if (!admin) return res.status(400).json({ msg: "Admin not found" });
 
     const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ msg: "Invalid email or password." });
 
     const token = jwt.sign(
       { user: { id: admin._id, role: "admin" } },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    console.log("✅ Password match:", isMatch);
-    if (!isMatch)
-      return res.status(400).json({ msg: res.__("auth.invalid_credentials") });
-
-    const payload = { user: { id: user.id, role: "user" } };
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token, user });
-      }
-    );
 
     res.json({ msg: "Admin logged in successfully", token });
   } catch (err) {
-    console.error(err.message);
+    console.error("❌ Admin login error:", err.message);
     res.status(500).json({ msg: "Server error" });
   }
 });
+
+
+
 
 router.post(
   "/login",
@@ -238,17 +233,27 @@ router.post("/forgot-password", async (req, res) => {
     return res.status(400).json({ msg: res.__("auth.email_required") });
 
   try {
+    // Try to find user first
     let user = await User.findOne({ email });
-    if (!user)
-      return res.status(400).json({ msg: res.__("auth.user_not_found") });
+    let isAdmin = false;
+
+    // If not a user, check in Admin model
+    if (!user) {
+      user = await Admin.findOne({ email });
+      isAdmin = true;
+    }
+
+    if (!user) return res.status(400).json({ msg: res.__("auth.user_not_found") });
 
     // 🔐 Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     // 🔒 Set reset token and OTP
-    const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "15m",
-    });
+    const resetToken = jwt.sign(
+      { userId: user._id, role: isAdmin ? "admin" : "user" },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
 
     user.resetToken = resetToken;
     user.resetTokenExpiry = Date.now() + 15 * 60 * 1000;
@@ -279,37 +284,38 @@ router.post("/forgot-password", async (req, res) => {
 
 router.post("/reset-password", async (req, res) => {
   const { token, newPassword } = req.body;
-
   if (!token || !newPassword) {
-    return res.status(400).json({ msg: res.__("auth.invalid_request") });
+    return res.status(400).json({ msg: "Invalid request" });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      return res.status(400).json({ msg: res.__("auth.user_not_found") });
-    }
+    // Search in both Admin and User collections
+    let user =
+      (await User.findById(decoded.userId)) ||
+      (await Admin.findById(decoded.userId));
+
+    if (!user) return res.status(404).json({ msg: "User/Admin not found" });
 
     if (Date.now() > user.resetTokenExpiry) {
-      return res.status(400).json({ msg: res.__("auth.expired_token") });
+      return res.status(400).json({ msg: "Token expired" });
     }
-    user.resetToken = undefined;
-    user.resetTokenExpiry = undefined;
 
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt); // ✅ must hash before saving
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    user.resetToken = null;
+    user.resetTokenExpiry = null;
 
     await user.save();
-    console.log("✅ Saved user password:", user.password);
-
-    res.json({ msg: res.__("auth.password_reset_success") });
+    res.json({ msg: "Password reset successfully" });
   } catch (err) {
-    console.error(err.message);
-    res.status(400).json({ msg: res.__("auth.invalid_token") });
+    console.error("❌ Reset error:", err.message);
+    res.status(400).json({ msg: "Invalid token" });
   }
 });
+
 
 router.get(
   "/google",

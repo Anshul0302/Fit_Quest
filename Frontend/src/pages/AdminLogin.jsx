@@ -17,7 +17,7 @@ const AdminLogin = () => {
     setMsg("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
+      const res = await axios.post("http://localhost:8000/api/auth/admin/login", {
         email,
         password,
       });

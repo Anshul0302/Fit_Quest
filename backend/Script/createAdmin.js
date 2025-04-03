@@ -1,6 +1,6 @@
 // script/createAdmin.js
 const mongoose = require("mongoose");
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -14,7 +14,9 @@ const createAdmin = async () => {
     );
     console.log("🛠️ Connected to DB");
 
-    const existing = await Admin.findOne({ email: "singh.thakur2226@gmail.com" })
+    const existing = await Admin.findOne({
+      email: "anshul.inventures@gmail.com",
+    });
     if (existing) {
       console.log("⚠️ Admin already exists:", existing._id);
       return process.exit();
@@ -23,14 +25,18 @@ const createAdmin = async () => {
     const hashedPassword = await bcrypt.hash("Admin123", 10);
 
     const admin = new Admin({
-      name: "Anshul",
-      username: "Anshul",
-      email: "singh.thakur2226@gmail.com",
+      name: "Inventures",
+      username: "Inventures",
+      email: "anshul.inventures@gmail.com",
       password: hashedPassword,
       role: "admin",
       isVerified: true,
+      resetToken: null,
+      otp: null,
+      otpExpiry: null
     });
     
+
     await admin.save();
     console.log("✅ Admin created:", admin._id);
     process.exit();
