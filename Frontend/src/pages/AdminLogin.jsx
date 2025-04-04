@@ -24,7 +24,7 @@ const AdminLogin = () => {
 
       localStorage.setItem("adminToken", res.data.token);
       setMsg("Login successful!");
-      navigate("/admin/dashboard");
+      navigate("/dashboard");
     } catch (err) {
       setMsg(err.response?.data?.msg || "Something went wrong.");
     }
