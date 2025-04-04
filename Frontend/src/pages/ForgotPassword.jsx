@@ -21,7 +21,7 @@ const ForgotPassword = () => {
         "http://localhost:8000/api/auth/forgot-password",
         { email }
       );
-      navigate("/verify-code", { state: { email } });
+      navigate("/verify-otp", { state: { email } });
 
       setMsg("Reset email sent. Check your inbox.");
     } catch (err) {
