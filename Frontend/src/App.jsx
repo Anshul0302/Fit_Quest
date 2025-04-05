@@ -27,6 +27,13 @@ import ChampionshipDetailsPage from "./components/Leaderboard/ChampionshipDetail
 import ParticipantsListPage from "./components/Leaderboard/ParticipantsListPage";
 import LeaderboardPage from "./components/Leaderboard/LeaderboardPage";
 import UserDetailsPage from "./components/Leaderboard/UserDetailsPage";
+import PaymentManagement from "./components/Payment/PaymentManagement";
+import PaymentDetails from "./components/Payment/PaymentDetails";
+import PaymentFilter from "./components/Payment/PaymentFilter";
+// Store Pages
+import StoreManagement from "./components/StoreManagement/StoreManagement";
+import CreateProduct from "./components/StoreManagement/CreateProduct";
+import ProductDetails from "./components/StoreManagement/ProductDetails";
 
 function App() {
   return (
@@ -52,20 +59,41 @@ function App() {
 
           <Route path="/challenges" element={<ChallengeTable />} />
           <Route path="/challenges/add" element={<AddChallenge />} />
-          <Route path="/admin/challenges/view/:id" element={<ViewChallenge />} />
-          <Route path="/admin/challenges/participants/:id" element={<ViewParticipants />} />
-          <Route path="/admin/challenges/edit/:id" element={<EditChallenge />} />
+          <Route
+            path="/admin/challenges/view/:id"
+            element={<ViewChallenge />}
+          />
+          <Route
+            path="/admin/challenges/participants/:id"
+            element={<ViewParticipants />}
+          />
+          <Route
+            path="/admin/challenges/edit/:id"
+            element={<EditChallenge />}
+          />
           <Route path="/admin/user/:id" element={<UserDetailsCH />} />
           <Route path="/admin/user/history/:id" element={<UserTaskHistory />} />
 
+          <Route path="/leaderboard" element={<ChampionshipListPage />} />
+          <Route
+            path="/championships/create"
+            element={<ChampionshipCreatePage />}
+          />
+          <Route
+            path="/championships/view/:id"
+            element={<ChampionshipDetailsPage />}
+          />
+          <Route path="/participants" element={<ParticipantsListPage />} />
+          <Route path="/usersParticipants/:id" element={<UserDetailsPage />} />
+          <Route path="/leaderboardPage" element={<LeaderboardPage />} />
 
-        <Route path="/leaderboard" element={<ChampionshipListPage />} />
-        <Route path="/championships/create" element={<ChampionshipCreatePage />} />
-        <Route path="/championships/view/:id" element={<ChampionshipDetailsPage />} />
-        <Route path="/participants" element={<ParticipantsListPage />} />
-        <Route path="/usersParticipants/:id" element={<UserDetailsPage />} />
-        <Route path="/leaderboardPage" element={<LeaderboardPage />} />
+          <Route path="/payments" element={<PaymentManagement />} />
+          <Route path="/payments/:id" element={<PaymentDetails />} />
+          <Route path="/paymentsFilter" element={<PaymentFilter />} />
 
+          <Route path="/store" element={<StoreManagement />} />
+          <Route path="/store/create" element={<CreateProduct />} />
+          <Route path="/store/view/:id" element={<ProductDetails />} />
         </Route>
       </Routes>
     </Router>
