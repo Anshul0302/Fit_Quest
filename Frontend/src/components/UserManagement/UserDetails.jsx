@@ -1,6 +1,6 @@
 // pages/UserDetails.js
 import { useState } from "react";
-import ProfileView from "../ReusableDetailsView";
+import ProfileView from "../UI/ReusableDetailsView";
 
 const UserDetails = () => {
   const [suspended, setSuspended] = useState(false);

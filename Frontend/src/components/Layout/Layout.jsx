@@ -6,13 +6,10 @@ import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* Full-width Topbar */}
       <Topbar />
-
-      {/* Sidebar + Main Content */}
       <div className="flex">
         <Sidebar />
-        <div className="flex-1 p-6">
+        <div className="flex-1 px-3">
           <Outlet />
         </div>
       </div>
@@ -21,4 +18,3 @@ const Layout = () => {
 };
 
 export default Layout;
-

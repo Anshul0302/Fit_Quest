@@ -1,6 +1,7 @@
-import ReusableTable from "../ReusableTable";
-import ActionMenu from "../ActionMenu";
+import ReusableTable from "../UI/ReusableTable";
+import ActionMenu from "../UI/ActionMenu";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const initialUsers = Array(8).fill().map((_, i) => ({
   id: i + 1,
@@ -27,7 +28,12 @@ const UserTable = () => {
       render: (user) => (
         <div className="flex items-center gap-2">
           <img src={user.avatar} alt="avatar" className="w-8 h-8 rounded-full" />
-          {user.name}
+          <Link
+            to={`/users/${user.id}`}
+            className="text-blue-600 hover:underline cursor-pointer"
+          >
+            {user.name}
+          </Link>
         </div>
       ),
     },

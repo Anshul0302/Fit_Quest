@@ -14,7 +14,7 @@ import {
     const navItems = [
       { label: 'Dashboard', icon: <HomeIcon size={18} />, path: '/dashboard' },
       { label: 'User Management', icon: <UsersIcon size={18} />, path: '/user-management' },
-      { label: 'Order Management', icon: <ShoppingCartIcon size={18} />, path: '/orders' },
+      { label: 'Order Management', icon: <ShoppingCartIcon size={18} />, path: '/order-management' },
       { label: 'Challenge & Quest', icon: <TrophyIcon size={18} />, path: '/challenges' },
       { label: 'Store Management', icon: <Store size={18} />, path: '/store' },
       { label: 'Subscription', icon: <CreditCardIcon size={18} />, path: '/subscriptions' },

@@ -1,4 +1,16 @@
 @import "tailwindcss";
+.input {
+  @import w-full px-3 py-2 border rounded;
+}
+.btn {
+  @import px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700;
+}
+.btn-outline {
+  @import px-4 py-2 border rounded text-gray-700 hover:bg-gray-100;
+}
+@import "react-datepicker/dist/react-datepicker.css";
+
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
