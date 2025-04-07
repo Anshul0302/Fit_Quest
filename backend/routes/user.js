@@ -156,20 +156,24 @@ router.post("/join/:challengeId", verifyToken, async (req, res) => {
 });
 
 // ✅ DELETE /api/challenge/delete/:id - Delete a challenge (Admin only)
-router.delete("/delete/:id", verifyToken, isAdmin, async (req, res) => {
+router.delete(
+  "/delete-challenge/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
     try {
       const challenge = await Challenge.findByIdAndDelete(req.params.id);
       if (!challenge) {
         return res.status(404).json({ msg: "Challenge not found" });
       }
-  
+
       res.json({ msg: "Challenge deleted successfully", challenge });
     } catch (err) {
       console.error("❌ Delete challenge error:", err);
       res.status(500).json({ msg: "Server error" });
     }
-  });
-  
+  }
+);
 
 // POST /api/user/subscription - Update Subscription
 
@@ -209,9 +213,10 @@ router.put("/update", verifyToken, async (req, res) => {
   }
 });
 
-router.delete("/delete", verifyToken, async (req, res) => {
+// delete user by id
+router.delete("/delete/:id", verifyToken, isAdmin, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ msg: res.__("user.not_found") });
 
     await User.findByIdAndDelete(req.user.id);

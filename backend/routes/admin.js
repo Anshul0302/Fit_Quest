@@ -8,7 +8,6 @@ const { verifyToken } = require("../middleware/auth");
 const { isAdmin } = require("../middleware/adminCheck");
 const Admin = require("../models/Admin");
 // Middleware to secure routes below - Only admin can access
-router.use(verifyToken, isAdmin);
 
 // ✅ Get All Admins
 router.get("/admin/all", async (req, res) => {
@@ -70,23 +69,7 @@ router.post("/admin/create", async (req, res) => {
   }
 });
 
-exports.verifyToken = (req, res, next) => {
-  const token =
-    req.header("x-auth-token") ||
-    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
 
-  if (!token) {
-    return res.status(401).json({ msg: res.__("admin.unauthorized") });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.user;
-    next();
-  } catch (err) {
-    res.status(401).json({ msg: res.__("admin.invalid_token") });
-  }
-};
 
 // GET /api/admin/dashboard - Admin Dashboard Stats
 router.get("/dashboard", async (req, res) => {
@@ -114,7 +97,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
-// GET /api/admin/orders - Get All Orders
+// GET /api/admin/orders -  Orders Maneg by Admin
 router.get("/orders", async (req, res) => {
   try {
     const orders = await require("../models/Order").find().populate("user");

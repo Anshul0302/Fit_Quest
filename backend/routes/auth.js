@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 const User = require("../models/User");
 const Admin = require("../models/Admin");
 const { verifyToken } = require("../middleware/auth");
+const { isAdmin } = require("../middleware/adminCheck");
 
 // POST /api/auth/signup - User Registration
 router.post(
@@ -81,6 +82,24 @@ router.get("/allusers", async (req, res) => {
     res.status(200).json(users);
   } catch (err) {
     console.error("❌ Error fetching users:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+//  Get logged-in user details
+router.get("/me/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select(
+      "-password -otp -otpExpiry -resetToken -resetTokenExpiry"
+    );
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("❌ Error fetching user:", err);
     res.status(500).json({ msg: "Server error" });
   }
 });
@@ -323,6 +342,7 @@ router.post("/forgot-password", async (req, res) => {
 
 router.post("/reset-password", async (req, res) => {
   const { token, newPassword } = req.body;
+
   if (!token || !newPassword) {
     return res.status(400).json({ msg: "Invalid request" });
   }
@@ -330,7 +350,6 @@ router.post("/reset-password", async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Search in both Admin and User collections
     let user =
       (await User.findById(decoded.userId)) ||
       (await Admin.findById(decoded.userId));
@@ -343,7 +362,6 @@ router.post("/reset-password", async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
-
     user.resetToken = null;
     user.resetTokenExpiry = null;
 

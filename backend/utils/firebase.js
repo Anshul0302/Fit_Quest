@@ -1,10 +1,10 @@
-// // utils/firebase.js
-// const admin = require("firebase-admin");
+// utils/firebase.js
+const admin = require("firebase-admin");
 
-// // const serviceAccount = require("../config/firebase-service-account.json"); 
+const serviceAccount = require("../config/fitquest-firebase-adminsdk.json") 
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
-// module.exports = admin;
+module.exports = admin;

@@ -173,11 +173,17 @@ router.post("/order/create", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/order/user", verifyToken, async (req, res) => {
+// get single user orders
+router.get("/order/user/:id", verifyToken, isAdmin, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user.id }).populate(
+    const orders = await Order.find({ user: req.params.id }).populate(
       "products.product"
     );
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ msg: "No orders found for this user." });
+    }
+
     res.json(orders);
   } catch (err) {
     console.error(err);
@@ -198,14 +204,15 @@ router.get("/order/all", verifyToken, isAdmin, async (req, res) => {
 // ❌ This must come AFTER `/order/all`
 router.get("/order/:id", verifyToken, async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate("products.product");
+    const order = await Order.findById(req.params.id).populate(
+      "products.product"
+    );
     if (!order) return res.status(404).json({ msg: "Order not found" });
     res.json(order);
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }
 });
-
 
 router.put("/order/update/:id", verifyToken, isAdmin, async (req, res) => {
   try {
