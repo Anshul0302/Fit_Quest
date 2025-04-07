@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/auth/forgot-password",
+        "http://172.16.11.30:8000/api/auth/forgot-password",
         { email }
       );
       navigate("/verify-otp", { state: { email } });

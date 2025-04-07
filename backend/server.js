@@ -9,13 +9,22 @@ const connectDB = require("./config/db");
 const i18n = require("i18n");
 const taskLogRoutes = require("./routes/taskLog");
 
-
 const app = express();
+const corsOptions = {
+  origin: ["http://localhost:5173", "http://172.16.11.30:5173"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
 
-// ✅ Middlewares (Corrected)
+app.options("*", cors(corsOptions));
+
+
+
 app.use(express.json()); // Parses JSON body
 app.use(express.urlencoded({ extended: true })); // Parses form data
-app.use(cors());
+
 
 i18n.configure({
   locales: ["en", "es"],
@@ -59,7 +68,7 @@ app.use("/api/upload", require("./routes/upload"));
 app.use("/api/verify", require("./routes/verify"));
 app.use("/api/challenge", require("./routes/user"));
 app.use("/api/notification", require("./routes/notification"));
-app.use("/api/task-log", taskLogRoutes); 
+app.use("/api/task-log", taskLogRoutes);
 app.use("/api/subscription", require("./routes/subscription"));
 app.use("/api/referral", require("./routes/referral"));
 
@@ -69,10 +78,16 @@ app.use((err, req, res, next) => {
   res.status(500).json({ msg: "Internal Server Error" });
 });
 
-app.use((err, req, res, next) => {
-  console.error("🔥 GLOBAL ERROR:", err);
-  res.status(500).json({ msg: "Something broke", error: err.message });
+app.use((req, res, next) => {
+  console.log("🔥 Request:", req.method, req.path);
+  console.log("🔥 Origin:", req.headers.origin);
+  next();
 });
+
+// app.use((err, req, res, next) => {
+//   console.error("🔥 GLOBAL ERROR:", err);
+//   res.status(500).json({ msg: "Something broke", error: err.message });
+// });
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;

@@ -3,6 +3,9 @@ const express = require("express");
 const router = express.Router();
 const Notification = require("../models/Notification");
 const { verifyToken } = require("../middleware/auth");
+const admin = require("../utils/firebase");
+const User = require("../models/User");
+const { isAdmin } = require("../middleware/adminCheck");
 
 // ✅ GET /api/notification - Get all user's notifications
 router.get("/all", verifyToken, async (req, res) => {
@@ -20,6 +23,29 @@ router.get("/all", verifyToken, async (req, res) => {
   } catch (err) {
     console.error("❌ Error getting notifications:", err);
     res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// ✅ POST /api/notification/send
+router.post("/send", verifyToken, isAdmin, async (req, res) => {
+  const { userId, title, body } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user || !user.deviceToken) {
+    return res.status(400).json({ msg: "User or device token not found." });
+  }
+
+  const message = {
+    notification: { title, body },
+    token: user.deviceToken,
+  };
+
+  try {
+    const response = await admin.messaging().send(message);
+    res.status(200).json({ msg: "Notification sent successfully", response });
+  } catch (err) {
+    console.error("❌ Firebase send error:", err);
+    res.status(500).json({ msg: "Failed to send notification" });
   }
 });
 

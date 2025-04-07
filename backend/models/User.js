@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema({
   // OTP fields for email verification
   otp: { type: String },
   otpExpiry: { type: Date },
+  deviceToken: { type: String },
   isVerified: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });

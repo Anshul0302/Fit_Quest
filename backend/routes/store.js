@@ -185,21 +185,29 @@ router.get("/order/user", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/order/:id", verifyToken, async (req, res) => {
+// ✅ This MUST come first
+router.get("/order/all", verifyToken, isAdmin, async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate(
-      "products.product"
-    );
-    if (!order)
-      return res.status(404).json({ msg: res.__("store.order_not_found") });
-    res.json(order);
+    const orders = await Order.find().populate("products.product");
+    res.json(orders);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: res.__("store.server_error") });
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
-router.put("/order/update/:id", verifyToken,isAdmin, async (req, res) => {
+// ❌ This must come AFTER `/order/all`
+router.get("/order/:id", verifyToken, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate("products.product");
+    if (!order) return res.status(404).json({ msg: "Order not found" });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+
+router.put("/order/update/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const updated = await Order.findByIdAndUpdate(
       req.params.id,

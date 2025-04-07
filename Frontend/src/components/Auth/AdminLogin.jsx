@@ -17,10 +17,14 @@ const AdminLogin = () => {
     setMsg("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/admin/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://172.16.11.30:8000/api/auth/admin/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       localStorage.setItem("adminToken", res.data.token);
       setMsg("Login successful!");

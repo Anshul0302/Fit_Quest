@@ -9,6 +9,7 @@ const nodemailer = require("nodemailer");
 
 const User = require("../models/User");
 const Admin = require("../models/Admin");
+const { verifyToken } = require("../middleware/auth");
 
 // POST /api/auth/signup - User Registration
 router.post(
@@ -27,13 +28,13 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, password } = req.body;
+    const { name, email, password, deviceToken } = req.body;
     try {
       let user = await User.findOne({ email });
       if (user) {
         return res.status(400).json({ msg: res.__("auth.user_exists") });
       }
-      user = new User({ name, email, password });
+      user = new User({ name, email, password, deviceToken });
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
 
@@ -189,6 +190,7 @@ router.post("/admin/login", async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
+// POST /api/auth/user/login
 
 router.post(
   "/login",
@@ -201,13 +203,18 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { email, password } = req.body;
+
+    const { email, password, deviceToken } = req.body;
+
     try {
+      // ✅ Find user only by email
       const user = await User.findOne({ email });
+
       if (!user)
         return res
           .status(400)
           .json({ msg: res.__("auth.invalid_credentials") });
+
       if (!user.password)
         return res.status(400).json({ msg: res.__("auth.google_only") });
 
@@ -218,6 +225,12 @@ router.post(
         return res
           .status(400)
           .json({ msg: res.__("auth.invalid_credentials") });
+
+      // ✅ Update device token if present
+      if (deviceToken) {
+        user.deviceToken = deviceToken;
+        await user.save();
+      }
 
       const payload = { user: { id: user.id, role: "user" } };
       jwt.sign(
@@ -235,6 +248,22 @@ router.post(
     }
   }
 );
+
+// PUT /api/user/device-token
+router.put("/device-token", verifyToken, async (req, res) => {
+  const { deviceToken } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    user.deviceToken = deviceToken;
+    await user.save();
+    res.json({ msg: "Device token updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
 
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
@@ -344,7 +373,7 @@ router.get(
       { expiresIn: "7d" },
       (err, token) => {
         if (err) throw err;
-        res.redirect(`http://localhost:8000/oauth-success?token=${token}`);
+        res.redirect(`http://172.16.11.30:8000/oauth-success?token=${token}`);
       }
     );
   }

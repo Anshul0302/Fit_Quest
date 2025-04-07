@@ -34,6 +34,9 @@ import PaymentFilter from "./components/Payment/PaymentFilter";
 import StoreManagement from "./components/StoreManagement/StoreManagement";
 import CreateProduct from "./components/StoreManagement/CreateProduct";
 import ProductDetails from "./components/StoreManagement/ProductDetails";
+import SubscriptionManagement from "./components/Subscription/SubscriptionManagement";
+import SubscriptionDetails from "./components/Subscription/SubscriptionDetails";
+import CreateSubscriptionPlan from "./components/Subscription/CreateSubscriptionPlan";
 
 function App() {
   return (
@@ -94,6 +97,17 @@ function App() {
           <Route path="/store" element={<StoreManagement />} />
           <Route path="/store/create" element={<CreateProduct />} />
           <Route path="/store/view/:id" element={<ProductDetails />} />
+
+          <Route path="/subscriptions" element={<SubscriptionManagement />} />
+          <Route
+            path="/subscriptions/view/:id"
+            element={<SubscriptionDetails />}
+          />
+          <Route
+            path="/subscriptions/create"
+            element={<CreateSubscriptionPlan />}
+          />
+        
         </Route>
       </Routes>
     </Router>
