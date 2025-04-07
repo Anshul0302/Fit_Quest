@@ -16,7 +16,7 @@ console.log("🔧 Cloudinary config:", {
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "fitness-quest",
+    folder: "uploads",
     allowed_formats: ["jpg", "jpeg", "png", "pdf", "docx", "xlsx"], // ✅ Include files
     resource_type: "auto", // ✅ auto = images, raw, video
   },
