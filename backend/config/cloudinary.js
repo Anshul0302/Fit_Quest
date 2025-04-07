@@ -15,10 +15,19 @@ console.log("🔧 Cloudinary config:", {
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "uploads",
-    allowed_formats: ["jpg", "jpeg", "png", "pdf", "docx", "xlsx"], // ✅ Include files
-    resource_type: "auto", // ✅ auto = images, raw, video
+  params: async (req, file) => {
+    const ext = file.originalname.split(".").pop().toLowerCase();
+
+    let resourceType = "image";
+    if (["pdf", "docx", "xlsx", "csv", "txt", "zip"].includes(ext)) {
+      resourceType = "raw"; // Cloudinary's term for non-image files
+    }
+
+    return {
+      folder: "uploads",
+      format: ext,
+      resource_type: resourceType,
+    };
   },
 });
 
