@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MoreVertical, Eye, Pencil, Trash } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
-const ActionMenu = ({ data }) => {
+const ActionMenu = ({ data, onView, onEdit, onDelete }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ const ActionMenu = ({ data }) => {
       {open && (
         <div className="absolute right-0 top-8 w-32 bg-white rounded-lg shadow border border-gray-200 z-50">
           <ul className="text-sm divide-y">
-            <li className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2" onClick={()=>{navigate(`details/${data.id}`)}}>
+            <li className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2" onClick={()=>{onView(data)}}>
               <Eye size={16} /> View
             </li>
             <li className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2" onClick={()=>{}}>

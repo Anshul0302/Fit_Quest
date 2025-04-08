@@ -9,6 +9,10 @@ import Layout from "./components/Layout"; // ✅ import layout
 import "./App.css";
 import UserDetails from "./components/View-Details/UserDetails";
 import UserTable from "./components/Tables/UserTable";
+import UserChallengeTable from "./components/Tables/UserChallengeTable";
+import UserChallengeDetails from "./components/View-Details/UserChallengeDetails";
+import StoreManagement from "./components/StoreManagement";
+import ProductTable from "./components/Tables/ProductTable";
 
 function App() {
   return (
@@ -29,8 +33,18 @@ function App() {
           <Route path="/user-management" element={<UserManagement />} >
             <Route index element={<UserTable />} /> {/* Default route */}
             <Route path="details/:id" element={<UserDetails />} />
+            <Route path="user-challenges/:id" element={<UserChallengeTable />} />
+            <Route path="user-challenge-details/:id" element={<UserChallengeDetails/>} />
           </Route>
-          {/* Add more routes here */}
+
+           {/* Store Management nested routes */}
+           <Route path="/store-management" element={<StoreManagement />} >
+            <Route index element={<ProductTable />} /> {/* Default route */}
+            {/* <Route path="details/:id" element={<UserDetails />} />
+            <Route path="user-challenges/:id" element={<UserChallengeTable />} />
+            <Route path="user-challenge-details/:id" element={<UserChallengeDetails/>} /> */}
+          </Route>
+
         </Route>
       </Routes>
     </Router>

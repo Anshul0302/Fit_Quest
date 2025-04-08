@@ -15,7 +15,7 @@ const Topbar = () => {
         try {
             const token = localStorage.getItem("adminToken");
             const res = await axios.get(
-                "http://localhost:8000/api/notification/all",
+                "http://172.16.11.30:8000/api/notification/all",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

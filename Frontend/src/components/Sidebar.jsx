@@ -16,7 +16,7 @@ import {
       { label: 'User Management', icon: <UsersIcon size={18} />, path: '/user-management' },
       { label: 'Order Management', icon: <ShoppingCartIcon size={18} />, path: '/orders' },
       { label: 'Challenge & Quest', icon: <TrophyIcon size={18} />, path: '/challenges' },
-      { label: 'Store Management', icon: <Store size={18} />, path: '/store' },
+      { label: 'Store Management', icon: <Store size={18} />, path: '/store-management' },
       { label: 'Subscription', icon: <CreditCardIcon size={18} />, path: '/subscriptions' },
       { label: 'Leaderboard', icon: <BarChart2Icon size={18} />, path: '/leaderboard' },
       { label: 'Payment', icon: <CreditCardIcon size={18} />, path: '/payments' },
