@@ -42,7 +42,7 @@ const VerificationCode = () => {
       console.log("Sending OTP verification with:", { email, otp: enteredOtp });
 
       const res = await axios.post(
-        "http://172.16.11.30:8000/api/auth/verify-otp",
+        "http://43.205.49.98:8000/api/auth/verify-otp",
         {
           email,
           otp: enteredOtp,

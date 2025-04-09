@@ -391,7 +391,7 @@ router.get(
       { expiresIn: "7d" },
       (err, token) => {
         if (err) throw err;
-        res.redirect(`http://172.16.11.30:8000/oauth-success?token=${token}`);
+        res.redirect(`http://43.205.49.98:8000/oauth-success?token=${token}`);
       }
     );
   }

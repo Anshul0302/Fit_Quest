@@ -11,7 +11,7 @@ const taskLogRoutes = require("./routes/taskLog");
 
 const app = express();
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://172.16.11.30:5173"],
+  origin: ["http://localhost:5173", "http://43.205.49.98:5173"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -20,11 +20,8 @@ app.use(cors(corsOptions));
 
 app.options("*", cors(corsOptions));
 
-
-
 app.use(express.json()); // Parses JSON body
 app.use(express.urlencoded({ extended: true })); // Parses form data
-
 
 i18n.configure({
   locales: ["en", "es"],
